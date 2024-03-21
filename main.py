@@ -2,6 +2,26 @@ import pygame
 from sys import exit
 from random import randint
 
+try:
+    with open('words.txt') as file:
+        wordlist = [line.strip() for line in file]
+except Exception as e:
+    print(f"ERROR: {e}")
+
+
+
+def get_random_word(wordlist, used_words):
+    if len(used_words) == len(wordlist):
+        running = False
+    while True:
+        index = randint(0, len(wordlist) - 1)
+        if index not in used_words:
+            used_words.append(index)
+            return wordlist[index]
+used_words = []       
+word = get_random_word(wordlist, used_words)
+
+
 def draw_text(text, color):
     rendered_text = pixel_font_120.render(text, False, color)
     text_rect = rendered_text.get_rect(center = (400,300))
@@ -39,21 +59,17 @@ def draw_fails():
         screen.blit(cross,(730,30))
 
 def calc():
-    global typed_text, score, dummy_words, word_index, word
+    global typed_text, score, word
     if typed_text == word:
         scoresound = pygame.mixer.Sound('assets/audio/scoreup.mp3')
         scoresound.play()
         score += 1
-        word_index += 1
         typed_text = ''
-        if word_index < len(dummy_words):word = dummy_words[word_index]
-        else:
-            word_index = 0
-            word = dummy_words[word_index]
+        word = get_random_word(wordlist,used_words)
         timer_line.width = 800
         
 def draw_timer_line():
-    global timer_line, word, words_wrong, typed_text, score, dummy_words, word_index, word
+    global timer_line, word, words_wrong, typed_text, score
     if timer_line.width > 533:
         pygame.draw.rect(screen,(51, 204, 51),timer_line)
     elif timer_line.width > 267:
@@ -66,12 +82,10 @@ def draw_timer_line():
         timer_line.width = 800
         words_wrong += 1
         wrong_word_list.append(word)
-        word_index += 1  
         typed_text = ''
-        if word_index < len(dummy_words):word = dummy_words[word_index]
-        else:
-            word_index = 0
-            word = dummy_words[word_index]
+        word = get_random_word(wordlist,used_words)
+
+
 
 def get_number():
     global alpha, add_mode
@@ -79,6 +93,7 @@ def get_number():
     else:alpha -= 5
     if alpha == 255:add_mode = False
     if alpha == 0:add_mode = True
+
 
 
 # Ini
@@ -114,9 +129,7 @@ start_input_text_rect = start_input_text.get_rect(center = (400, 420))
 alpha = 0
 add_mode = True
 
-dummy_words = ['apple', 'banana', 'cat', 'dog', 'elephant', 'fish', 'giraffe', 'horse', 'iguana', 'jellyfish']
-word_index = 0
-word = dummy_words[word_index]
+
 score = 0
 words_wrong = 0
 wrong_word_list = []
@@ -144,13 +157,9 @@ while True:
 
                     elif event.key == pygame.K_RETURN:
                         fail.play()
-                        word_index += 1
                         typed_text = ''
                         words_wrong += 1
-                        if word_index < len(dummy_words):word = dummy_words[word_index]
-                        else:
-                            word_index = 0
-                            word = dummy_words[word_index]
+                        word = get_random_word(wordlist,used_words)
                     
                     elif event.key == pygame.K_BACKSPACE:
                         typed_text = typed_text[:-1]
