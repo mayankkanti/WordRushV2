@@ -8,8 +8,6 @@ try:
 except Exception as e:
     print(f"ERROR: {e}")
 
-
-
 def get_random_word(wordlist, used_words):
     if len(used_words) == len(wordlist):
         running = False
@@ -20,7 +18,6 @@ def get_random_word(wordlist, used_words):
             return wordlist[index]
 used_words = []       
 word = get_random_word(wordlist, used_words)
-
 
 def draw_text(text, color):
     rendered_text = pixel_font_120.render(text, False, color)
@@ -85,16 +82,12 @@ def draw_timer_line():
         typed_text = ''
         word = get_random_word(wordlist,used_words)
 
-
-
 def get_number():
     global alpha, add_mode
     if add_mode:alpha += 5
     else:alpha -= 5
     if alpha == 255:add_mode = False
     if alpha == 0:add_mode = True
-
-
 
 # Ini
 pygame.init()
@@ -110,7 +103,6 @@ pixel_font_120 = pygame.font.Font('assets/font/Pixeltype.ttf', 120)
 pixel_font_90 = pygame.font.Font('assets/font/Pixeltype.ttf', 90)
 pixel_font_60 = pygame.font.Font('assets/font/Pixeltype.ttf', 60)
 pixel_font_30 = pygame.font.Font('assets/font/Pixeltype.ttf', 30)
-
 
 # Game Backgrounds music
 bg = pygame.mixer.Sound('assets/audio/bgm.mp3')
@@ -203,3 +195,7 @@ while True:
     # Screen Update
     pygame.display.update()
     clock.tick(60)
+    
+    
+# Credits BGM
+# https://opengameart.org/content/8-bit-retro-game-background-music-loop-ft-dusk
