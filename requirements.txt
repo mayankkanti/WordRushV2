@@ -14,7 +14,7 @@ colorama==0.4.6
 comtypes==1.4.8
 dacite==1.8.1
 Deprecated==1.2.15
-Django==5.1.1
+Django==5.1.5
 dnspython==2.7.0
 eventlet==0.38.2
 fastapi==0.103.2
